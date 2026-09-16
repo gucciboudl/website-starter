@@ -77,10 +77,10 @@ $('#settings').onclick=()=>{const f=$('#settingsform');f.elements.year.value=sta
 $('#download').onclick=()=>{persist();const clone=document.documentElement.cloneNode(true);clone.querySelector('#saved-data').textContent=JSON.stringify(state).replace(/</g,'\\u003c');clone.querySelectorAll('dialog').forEach(d=>d.removeAttribute('open'));clone.querySelector('#status').textContent='';clone.querySelectorAll('script[src],link[href*='+'"google"'+'],style[data-google]').forEach(x=>x.remove());clone.querySelector('#google-map').innerHTML='';clone.querySelector('#google-panel').hidden=true;clone.querySelector('#google-home').append(clone.querySelector('#google-panel'));clone.querySelector('#overview').hidden=false;clone.querySelector('#saved-data').textContent=JSON.stringify({...state,offlineOnly:true}).replace(/</g,'\\u003c');const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html;charset=utf-8'});const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='泰国旅行手册.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);toast('已生成包含当前记录的离线文件')};
 
 // Google's browser key is restricted to gucciboy.com and Maps JavaScript API.
-const GOOGLE_WEB_KEY="AIzaSyCW3AzhwI72br-BMpfkC2GG3z5WrL8EsJk";
+const GOOGLE_WEB_KEY="__GOOGLE_MAPS_WEB_KEY__";
 const GOOGLE_MAP_ID='8ef89f2d5a8d548e72c2019c';
 let streetMode=true,gmReady=false,gmFailed=false,gmMap=null,gmMarks=[],gmLines=[],gmDay=null,gmLoading=null;
-function googleAllowed(){return !embedded.offlineOnly&&location.protocol==='https:'&&location.hostname==='gucciboy.com'&&navigator.onLine!==false}
+function googleAllowed(){return GOOGLE_WEB_KEY.startsWith('AIza')&&!embedded.offlineOnly&&location.protocol==='https:'&&location.hostname==='gucciboy.com'&&navigator.onLine!==false}
 function googleStatus(text){$('#google-status').textContent=text}
 function fallbackGoogle(text){gmFailed=true;$('#google-panel').hidden=true;$('#google-home').append($('#google-panel'));$('#overview').hidden=false;if($('#mapdialog').open&&gmDay!==null)$('#largemap').innerHTML='<div class="mapframe">'+mapSVG(routeData(gmDay,true))+'</div>';googleStatus(text);$('#googlemode').setAttribute('aria-pressed','false');$('#schematicmode').setAttribute('aria-pressed','true')}
 window.gm_authFailure=()=>fallbackGoogle('街道地图暂不可用，已保留离线示意图。');
