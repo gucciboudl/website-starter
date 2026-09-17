@@ -85,3 +85,12 @@ description: 修改、验证和发布 gucciboy.com/thailand 泰国旅行手册�
 ## 其他设备或对话
 
 同项目新对话从根目录 `AGENTS.md` 进入本文。云端需先有仓库访问和可提交能力；本机浏览器登录、4175 服务、文件路径不会自动转移到手机。缺少发布能力时保留已完成修改，清楚报告具体缺口，不把本机登录视为云端授权已可用。
+
+## 随身翻译与泰语地址（2026-09-17）
+
+- 01 内包含中/泰/英翻译、Google 翻译网页链接和 iOS 尝试打开 App 入口。网页版带原文和语言；App scheme 不保证预填文字，提供复制原文作为回退。
+- `translate-worker.js` 由 `build-site.cjs` 复制为 `dist/_worker.js`，`_routes.json` 仅让 `/api/translate` 进入函数。静态页面仍使用原部署方式。前端请求 `https://website-starter-5u7.pages.dev/api/translate`，不要假设主域名路径代理覆盖 API。
+- Cloudflare Production Secret `GOOGLE_TRANSLATE_API_KEY` 仅供服务端使用；Google 凭据名 `Thailand Translation - Cloudflare Server`，仅允许 Cloud Translation API。不得把密钥加入 HTML、日志、文档或仓库。
+- 翻译由按钮触发，最多 1000 字；服务端验证来源、语言、长度并使用短时请求限流。来源校验不是身份认证，内存限流不是全局消费上限；需要控制账单时使用 Google 项目配额。
+- 地点泰语地址通过 Places 的泰语本地化查询，按可见条目加载，仅保存在内存；匹配不明确时提示查看地图，不编造地址。离线导出不保存 API 地址内容。
+- 发布翻译改动时同时核对 HTML、构建脚本、Worker 三者，实际测试译文与错误提示；Google 地点地址需要在正式域名验证。
