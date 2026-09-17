@@ -10,4 +10,6 @@ fs.mkdirSync('dist', { recursive: true });
 fs.writeFileSync(path.join('dist', 'thailand.html'), source.replace(token, key));
 fs.copyFileSync('index.html', path.join('dist', 'index.html'));
 fs.writeFileSync(path.join('dist', '_headers'), '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n');
+fs.copyFileSync('translate-worker.js',path.join('dist','_worker.js'));
+fs.writeFileSync(path.join('dist','_routes.json'),JSON.stringify({version:1,include:['/api/translate'],exclude:[]}));
 console.log('Static site built successfully.');
